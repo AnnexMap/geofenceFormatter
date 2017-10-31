@@ -146,7 +146,6 @@ AREA_NAME = ''     # the city or region you are scanning
 # rectangle you defined with MAP_START and MAP_END.
 # The rows/columns will also be used for the dot grid in the console output.
 # Provide more accounts than the product of your grid to allow swapping.
-#GRID = (40, 25)  # rows, columns
 GRID = (25, 20)  # rows, columns
 
 # the corner points of a rectangle for your workers to spread out over before
@@ -179,7 +178,7 @@ ALT_RANGE = (15, 50)  # Fall back to altitudes in this range if Google query fai
 
 
 # Address to use for manager, leave commented if you're not sure.
-#MANAGER_ADDRESS = r'\\.\pipe\Denver'  # must be in this format for Windows
+#MANAGER_ADDRESS = r'\\.\pipe\{}'.format(AREA_NAME)  # must be in this format for Windows
 MANAGER_ADDRESS = '{}.sock'.format(AREA_NAME)       # the socket name for Unix systems
 #MANAGER_ADDRESS = ('127.0.0.1', 5002)  # could be used for CAPTCHA solving and live worker maps on remote systems
 
