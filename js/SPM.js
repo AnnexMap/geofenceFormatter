@@ -115,12 +115,25 @@ zone_0.addListener('click', function(event){infoWindow=new google.maps.InfoWindo
 	
 	path = polygon.getPath();
 	  
-	  var nw_lat=0, nw_lon=0, se_lat=0, se_lon=0;
+	  var nw_lat=255, nw_lon=255, se_lat=-255, se_lon=-255;
 	  var area_text = 'Polygon((';
 	for(var i = 0; i < path.length; i++) {
 		area_text += "(" + path.getAt(i).lat() + "," + path.getAt(i).lng() + ")";
 		if (i != path.length-1) {
 			area_text += ",";
+		}
+		
+		if (path.getAt(i).lat() < nw_lat){
+			nw_lat = path.getAt(i).lat();
+		}
+		if (path.getAt(i).lng() < nw_lon){
+			nw_lon = path.getAt(i).lng();
+		}
+		if (path.getAt(i).lat() > se_lat){
+			se_lat = path.getAt(i).lat();
+		}
+		if (path.getAt(i).lng() > se_lon){
+			se_lon = path.getAt(i).lng();
 		}
 	}
 	  area_text += '))';
@@ -138,8 +151,8 @@ GRID = (25, 20)  # rows, columns
 
 # the corner points of a rectangle for your workers to spread out over before
 # any spawn points have been discovered
-MAP_START = (40.384212768155045,-75.7781982421875)
-MAP_END = (39.58452390500424, -74.619140625)
+MAP_START = (${nw_lat},${nw_lon})
+MAP_END = (${se_lat},${se_lon})
 
 
 # filename of accounts CSV
@@ -154,7 +167,7 @@ DIRECTORY = '/root/Monocle/{}'.format(AREA_NAME)
 ## more information available in the shapely manual:
 ## http://toblerity.org/shapely/manual.html#polygons
 from shapely.geometry import Polygon
-BOUNDARIES = Polygon(((40.300476079749494,-74.63287353515625),(40.371658891506094,-74.96246337890625),(39.83174093314556,-75.77545166015625),(39.5866406233146,-75.78094482421875),(39.71986348549764,-75.16571044921875),(40.065460682065535,-74.62738037109375),(40.300476079749494,-74.63287353515625)))
+BOUNDARIES = ${area_text}
 
 # sent with GET_PLAYER requests, should match your region
 PLAYER_LOCALE = {'country': 'US', 'language': 'en', 'timezone': 'America/New_York'}
