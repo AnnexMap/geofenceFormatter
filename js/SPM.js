@@ -112,6 +112,66 @@ zone_0.addListener('click', function(event){infoWindow=new google.maps.InfoWindo
 
   google.maps.event.addDomListener(drawingManager, 'polygoncomplete', function(polygon) {
         document.getElementById("action").value += "\n\n";
+	  
+	var html_out = `### All lines that are commented out (and some that aren't) are optional ###
+
+AREA_NAME = ''     # the city or region you are scanning
+
+# The number of simultaneous workers will be these two numbers multiplied.
+# On the initial run, workers will arrange themselves in a grid across the
+# rectangle you defined with MAP_START and MAP_END.
+# The rows/columns will also be used for the dot grid in the console output.
+# Provide more accounts than the product of your grid to allow swapping.
+#GRID = (40, 25)  # rows, columns
+GRID = (25, 20)  # rows, columns
+
+# the corner points of a rectangle for your workers to spread out over before
+# any spawn points have been discovered
+MAP_START = (40.384212768155045,-75.7781982421875)
+MAP_END = (39.58452390500424, -74.619140625)
+
+
+# filename of accounts CSV
+ACCOUNTS_CSV = '/root/Monocle/{}/accounts.csv'.format(AREA_NAME)
+
+# the directory that the pickles folder, socket, CSV, etc. will go in
+# defaults to working directory if not set
+DIRECTORY = '/root/Monocle/{}'.format(AREA_NAME)
+
+## alternatively define a Polygon to use as boundaries (requires shapely)
+## if BOUNDARIES is set, STAY_WITHIN_MAP will be ignored
+## more information available in the shapely manual:
+## http://toblerity.org/shapely/manual.html#polygons
+from shapely.geometry import Polygon
+BOUNDARIES = Polygon(((40.300476079749494,-74.63287353515625),(40.371658891506094,-74.96246337890625),(39.83174093314556,-75.77545166015625),(39.5866406233146,-75.78094482421875),(39.71986348549764,-75.16571044921875),(40.065460682065535,-74.62738037109375),(40.300476079749494,-74.63287353515625)))
+
+# sent with GET_PLAYER requests, should match your region
+PLAYER_LOCALE = {'country': 'US', 'language': 'en', 'timezone': 'America/New_York'}
+
+# used for altitude queries and maps in reports
+#GOOGLE_MAPS_KEY = 'AIzaSyCzDtusrcDG9Ggh-kEUJ805DqdD-LB2I9s'  # this key is fake
+REPORT_MAPS = True  # Show maps on reports
+ALT_RANGE = (15, 50)  # Fall back to altitudes in this range if Google query fails
+
+
+# Address to use for manager, leave commented if you're not sure.
+#MANAGER_ADDRESS = r'\\.\pipe\Denver'  # must be in this format for Windows
+MANAGER_ADDRESS = '{}.sock'.format(AREA_NAME)       # the socket name for Unix systems
+#MANAGER_ADDRESS = ('127.0.0.1', 5002)  # could be used for CAPTCHA solving and live worker maps on remote systems
+
+
+#Import Global settings
+import os, sys
+
+global_config_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/Monocle-lite/global_config.py'
+
+sys.path.append(global_config_path)
+
+from global_config import * 
+
+# Override global settings below`;  
+	  document.getElementById("action").value += html_out;
+	  
       path = polygon.getPath();
       for(var i = 0; i < path.length; i++) {
         document.getElementById("action").value += path.getAt(i).lat() + "," + path.getAt(i).lng();
@@ -119,6 +179,7 @@ zone_0.addListener('click', function(event){infoWindow=new google.maps.InfoWindo
         document.getElementById("action").value += '\n';
         }
       }
+	  
       drawingManager.setOptions({
         drawingControl: true
       });
