@@ -112,7 +112,18 @@ zone_0.addListener('click', function(event){infoWindow=new google.maps.InfoWindo
 
   google.maps.event.addDomListener(drawingManager, 'polygoncomplete', function(polygon) {
         document.getElementById("action").value += "\n\n";
+	
+	path = polygon.getPath();
 	  
+	  var nw_lat=0, nw_lon=0, se_lat=0, se_lon=0;
+	  var area_text = 'Polygon((';
+	for(var i = 0; i < path.length; i++) {
+		document.getElementById("action").value += path.getAt(i).lat() + "," + path.getAt(i).lng();
+		if (i != path.length-1) {
+			document.getElementById("action").value += '\n';
+		}
+	}
+	  area_text += '))';
 	var html_out = `### All lines that are commented out (and some that aren't) are optional ###
 
 AREA_NAME = ''     # the city or region you are scanning
@@ -172,13 +183,7 @@ from global_config import *
 # Override global settings below`;  
 	  document.getElementById("action").value += html_out;
 	  
-      path = polygon.getPath();
-      for(var i = 0; i < path.length; i++) {
-        document.getElementById("action").value += path.getAt(i).lat() + "," + path.getAt(i).lng();
-        if (i != path.length-1) {
-        document.getElementById("action").value += '\n';
-        }
-      }
+      
 	  
       drawingManager.setOptions({
         drawingControl: true
