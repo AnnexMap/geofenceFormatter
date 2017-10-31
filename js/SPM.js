@@ -115,7 +115,7 @@ zone_0.addListener('click', function(event){infoWindow=new google.maps.InfoWindo
 	
 	path = polygon.getPath();
 	  
-	  var nw_lat=255, nw_lon=255, se_lat=-255, se_lon=-255;
+	  var nw_lat=-255, nw_lon=255, se_lat=255, se_lon=-255;
 	  var area_text = 'Polygon((';
 	for(var i = 0; i < path.length; i++) {
 		area_text += "(" + path.getAt(i).lat() + "," + path.getAt(i).lng() + ")";
@@ -123,13 +123,13 @@ zone_0.addListener('click', function(event){infoWindow=new google.maps.InfoWindo
 			area_text += ",";
 		}
 		
-		if (path.getAt(i).lat() < nw_lat){
+		if (path.getAt(i).lat() > nw_lat){
 			nw_lat = path.getAt(i).lat();
 		}
 		if (path.getAt(i).lng() < nw_lon){
 			nw_lon = path.getAt(i).lng();
 		}
-		if (path.getAt(i).lat() > se_lat){
+		if (path.getAt(i).lat() < se_lat){
 			se_lat = path.getAt(i).lat();
 		}
 		if (path.getAt(i).lng() > se_lon){
