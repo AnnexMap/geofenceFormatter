@@ -118,9 +118,9 @@ zone_0.addListener('click', function(event){infoWindow=new google.maps.InfoWindo
 	  var nw_lat=0, nw_lon=0, se_lat=0, se_lon=0;
 	  var area_text = 'Polygon((';
 	for(var i = 0; i < path.length; i++) {
-		document.getElementById("action").value += path.getAt(i).lat() + "," + path.getAt(i).lng();
+		area_text += "(" + path.getAt(i).lat() + "," + path.getAt(i).lng() + ")";
 		if (i != path.length-1) {
-			document.getElementById("action").value += '\n';
+			area_text += ",";
 		}
 	}
 	  area_text += '))';
